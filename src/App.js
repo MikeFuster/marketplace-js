@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Marketplace } from "@fusebit/react-marketplace";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    const handleMessage = (e) => {
+      const message = JSON.parse(e.data);
+      setData(message);
+    };
+    window.addEventListener("message", handleMessage);
+
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Marketplace {...data} />
     </div>
   );
 }
